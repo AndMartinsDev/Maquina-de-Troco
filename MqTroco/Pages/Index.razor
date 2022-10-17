@@ -1,41 +1,48 @@
 ﻿@page "/"
 
-<PageTitle>Index</PageTitle>
-<div class="card border-primary mb-1" style="box-shadow:10px 5px 5px black; height:40rem;">
-  <div class="card-header"><h1>Bem Vindo!!!</h1></div>
-	<div class="card-body">
-		<h4 class="card-title">Primary card title</h4>
-		<div class="container">
-			<div class="row">
-				<div class="" style="max-width:350px;">	
+<PageTitle>Home</PageTitle>
+<div class="card border-primary mb-1" style="box-shadow:10px 5px 5px black; min-height:40rem;">
+  <div class="card-header" style="display:flex"><h1> - Bem Vindo!!! <smal> - Esta é a Maquina de Troco -</smal></h1></div>
+	<div class="card-body" style="padding:3rem;">
+			<div class="container" style="display:flex;">
+				<div class="row gx-5">
+				<div class="col card text-white bg-info mb-3" style="box-shadow: 10px 5px 5px black; min-width:400px; margin-top:1rem; text-align: center;">
+					<div class="card-header">
+						<h2>Gerenciando o Seu Caixa</h2>
+					</div>
+					<div class="card-body">
+					<h4 style="margin-top:1.5rem;"> São 3 Operações para lhe ajudar a gerenciar o seu caixa de uma forma mais organizada.</h4>
+					<h3 style="margin-top:1.5rem;"> Cada moeda vale muito!.</h3>
+					</div>
+				</div>
+				<div class="col-1" style="padding:2rem; min-width:350px; display: flex; justify-content: center;">
+					<fieldset class="form-group">
+						<legend class="mt-4"><h1 style="text-align: center; font-size3rem;">Descrição:</h1></legend>
+						<div Style="text-align: center;">
+							<div class="form-check form-switch" style="margin-top:1rem;">
+							<label class="form-check-label" for="flexSwitchCheckDefault"><h5>- Abasteça o seu Caixa;</h5></label>
+							</div>
+							<div class="form-check form-switch" style="margin-top:1rem;">
+							<label class="form-check-label" for="flexSwitchCheckChecked"><h5>- Retire Moedas quando precisar;</h5></label>
+							</div>
+							<div class="form-check form-switch" style="margin-top:1rem;">
+							<label class="form-check-label" for="flexSwitchCheckChecked"><h5>- Gerar Troco a partir de um valor informado;</h5></label>
+							</div>
+						</div>
+					</fieldset>
+				</div>
+				<div class="col" style="min-width:350px;">
 					<ul class="list-group">
 						<a href="#" class="txt-center list-group-item list-group-item-action active">
-							<h2 style="tex-align:center;">$$ CAIXA $$</h2>
+							<h2 style="tex-align:center; text-align:center;">$$ CAIXA $$</h2>
 						</a>
-					  <li class="list-group-item d-flex justify-content-between align-items-center">
-						<h5> Moedas de 1 real</h5>
-						<span class="badge bg-primary rounded-pill">14</span>
-					  </li>
-					  <li class="list-group-item d-flex justify-content-between align-items-center">
-						<h5> Moedas de 50 centavos</h5>
-						<span class="badge bg-primary rounded-pill">2</span>
-					  </li>
-					  <li class="list-group-item d-flex justify-content-between align-items-center">
-						<h5> Moedas de 25 centavos</h5>
-						<span class="badge bg-primary rounded-pill">1</span>
-					  </li>
-					   <li class="list-group-item d-flex justify-content-between align-items-center">
-						<h5> Moedas de 10 centavos</h5>
-						<span class="badge bg-primary rounded-pill">1</span>
-					  </li>
-					   <li class="list-group-item d-flex justify-content-between align-items-center">
-						<h5> Moedas de 05 centavos</h5>
-						<span class="badge bg-primary rounded-pill">1</span>
-					  </li>
-					   <li class="list-group-item d-flex justify-content-between align-items-center">
-						<h5> Moedas de 01 centavo</h5>	
-						<span class="badge bg-primary rounded-pill">1</span>
-					  </li>
+						@foreach (var moeda in caixa.Moedas)
+						{
+							<li class="list-group-item d-flex justify-content-between align-items-center">
+									<h5>Moedas @moeda.Nome</h5>
+								<span class="badge bg-primary rounded-pill">@moeda.Qtd</span>
+							</li>	
+						}
 					</ul>
 				</div>
 			</div>
@@ -44,8 +51,68 @@
 </div>
 
 
-@code{
+@code {
+	//Instanciação dos Objetos
+	public List<Moeda> moedasList = new List<Moeda>();
+	public Caixa caixa = new Caixa();
+	CaixaLogics caixaLogic = new CaixaLogics();
+
+	//Variáveis auxiliares do Caixa renderização de Elementos na tela
+	static string nomeMoedaSelected { get; set; } = "";
+	static int idMoedaSelected { get; set; } = 0;
+	static int qtdMoedasSelected { get; set; } = 0;
+	static double vlrMoedaInputed { get; set; } = 0.00;
+	static List<string> nomesMoedas = new List<string>()
+	{
+		"R$1,00 Real",
+		"R$0,50 centavos",
+		"R$0,25 centavos",
+		"R$0,10 centavos",
+		"RS0,05 centavos",
+		"R$0,01 centavo"
+	};
 
 
+	//Metodo que Inicializa a Pagina
+	protected override async Task OnInitializedAsync()
+	{
+		//Buscar estado atual do caixa;
+		//caixa = await caixaLogic.List();
+		IniciaCaixa();
+
+
+		//VerificaCaixa(); //Função Para Debug;
+
+	}
+
+	public void IniciaCaixa()
+	{
+		if (moedasList.Count() < 1)
+		{
+			//Console.WriteLine("Iniciar Caixa!");
+			//Console.WriteLine(moedasList.Count());
+			caixa.Moedas = GeraCaixaMoedas();
+		}
+		else
+		{
+			//Console.WriteLine("Caixa NÃO Iniciado!");
+		}
+
+	}
+
+	static List<Moeda> GeraCaixaMoedas()
+	{
+		List<Moeda> geraListMoedas = new List<Moeda>();
+		geraListMoedas.Add(new Moeda() { Id = 1, Nome = "R$1,00 Real", Valor = 1.00, Qtd = 0 });
+		geraListMoedas.Add(new Moeda() { Id = 2, Nome = "R$0,50 centavos", Valor = 0.50, Qtd = 0 });
+		geraListMoedas.Add(new Moeda() { Id = 3, Nome = "R$0,25 centavos", Valor = 0.25, Qtd = 0 });
+		geraListMoedas.Add(new Moeda() { Id = 4, Nome = "R$0,10 centavos", Valor = 0.10, Qtd = 0 });
+		geraListMoedas.Add(new Moeda() { Id = 5, Nome = "RS0,05 centavos", Valor = 0.05, Qtd = 0 });
+		geraListMoedas.Add(new Moeda() { Id = 6, Nome = "R$0,01 centavo", Valor = 0.01, Qtd = 0 });
+
+		//Salva Informações no Banco de Dados;
+		//Atualiza a Pagina;
+		return geraListMoedas;
+	}
 
 }

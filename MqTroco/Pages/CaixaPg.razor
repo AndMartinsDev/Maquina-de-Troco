@@ -7,9 +7,10 @@
   <div class="card-header" style="display:flex"><h1> - Bem Vindo!!! <smal> - Esta é a Maquina de Troco -</smal></h1></div>
 	<div class="card-body" style="padding:3rem;">
 			<div class="container" style="display:flex;">
-
-			<!--Componente que Gera o Caixa-->
-			<div class="row gx-5">
+				<div class="row gx-5">	
+			
+					
+				<!--Componente que Gera o Caixa-->
 				<div class="col" style="min-width:350px;">
 					<ul class="list-group">
 						<a href="#" class="txt-center list-group-item list-group-item-action active">
@@ -245,13 +246,13 @@
 	{
 		if (moedasList.Count() < 1)
 		{
-			Console.WriteLine("Iniciar Caixa!");
-			Console.WriteLine(moedasList.Count());
+			//Console.WriteLine("Iniciar Caixa!");
+			//Console.WriteLine(moedasList.Count());
 			caixa.Moedas = GeraCaixaMoedas();
 		}
 		else
 		{
-			Console.WriteLine("Caixa NÃO Iniciado!");
+			//Console.WriteLine("Caixa NÃO Iniciado!");
 		}
 		
 	}
