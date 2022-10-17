@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.Contracts;
-using System.Runtime.InteropServices;
-
+﻿
 namespace MqTroco.Data
 {
     public class Moeda

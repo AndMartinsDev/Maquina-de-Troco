@@ -10,7 +10,7 @@
 
 			<!--Componente que Gera o Caixa-->
 			<div class="row gx-5">
-				<div class="col" style="min-width:350px;">	
+				<div class="col" style="min-width:350px;">
 					<ul class="list-group">
 						<a href="#" class="txt-center list-group-item list-group-item-action active">
 							<h2 style="tex-align:center; text-align:center;">$$ CAIXA $$</h2>
@@ -96,10 +96,12 @@
 				</div>
 
 
+
+
 				<!--Componente Gerar Troco-->
 				<div class="col card bg-light mb-3" style="box-shadow: 10px 5px 5px black; min-width:400px; margin-top:1rem; text-align: center;">
 					<div class="card-header">
-						<h1><strong>Sangria de Moedas</strong></h1>
+						<h1><strong>Gerar Troco</strong></h1>
 					</div>
 					<div class="card-body">
 						<form>
@@ -112,7 +114,7 @@
 
 								<div class="input-group mb-3" style="display: flex; justify-content: center;">
 									<span class="input-group-text">$</span>
-										<input type="text" class="form-control" style="font-size: xx-large; text-align: center; max-width:200px;" aria-label="Amount (to the nearest dollar)" @bind-value="@qtdMoedasSelected">
+										<input type="text" class="form-control" style="font-size: xx-large; text-align: center; max-width:200px;" aria-label="Amount (to the nearest dollar)" @bind-value="@vlrMoedaInputed">
 									<span class="input-group-text">$</span>
 									<button class="btn btn-secondary" type="submit" id="button-addon2"><h5>Adicionar <br/> Quantidade</h5></button>
 								</div>
@@ -120,21 +122,26 @@
 						</form>
 					</div>
 				</div>
+
+
+
 				
 			</div>
 		</div>
 	</div>
 </div>
 
+
 @code {
 	//Instanciação dos Objetos
 	public List<Moeda> moedasList = new List<Moeda>();
-	public Caixa caixa = new Caixa("André");
+	public Caixa caixa = new Caixa();
 
 	//Variáveis auxiliares do Caixa renderização de Elementos na tela
 	static string nomeMoedaSelected { get; set; } = "";
 	static int idMoedaSelected { get; set; } = 0;
 	static int qtdMoedasSelected { get; set; } = 0;
+	static double vlrMoedaInputed { get; set; } = 0.00;
 	static List<string> nomesMoedas = new List<string>()
 	{
 		"R$1,00 Real",
@@ -208,6 +215,7 @@
 		//Envia os valores atualizados do caixa para o banco;
 		//Atualiza a Pagina;
 	}
+
 
 	private void GeraTroco(double valorCompra)
 	{
