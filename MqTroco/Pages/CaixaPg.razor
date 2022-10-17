@@ -11,7 +11,7 @@
 			
 					
 				<!--Componente que Gera o Caixa-->
-				<div class="col" style="min-width:350px;">
+				<div class="col" style="min-width:350px; margin-top:0;">
 					<ul class="list-group">
 						<a href="#" class="txt-center list-group-item list-group-item-action active">
 							<h2 style="tex-align:center; text-align:center;">$$ CAIXA $$</h2>
@@ -20,7 +20,7 @@
 						{
 							<li class="list-group-item d-flex justify-content-between align-items-center">
 									<h5>Moedas @moeda.Nome</h5>
-								<span class="badge bg-primary rounded-pill">@moeda.Qtd</span>
+								<span class="badge bg-primary rounded-pill-lg" style="font-size:1rem;">@moeda.Qtd</span>
 							</li>	
 						}
 					</ul>
@@ -29,24 +29,21 @@
 				<!--Componente de Seleção dos Componentes de Chamada de Função-->
 				<div class="col-1" style="padding:2rem; min-width:350px; display: flex; justify-content: center;">
 					<fieldset class="form-group">
-						<legend class="mt-4"><h1 style="padding-left:1.5rem;">Opções</h1></legend>
+						<legend class="mt-4"><h1 style="padding-left:1.5rem;">Informações</h1></legend>
 						<div class="form-check form-switch">
-							<input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-							<label class="form-check-label" for="flexSwitchCheckDefault"><h5>Abastecer Moedas</h5></label>
+							<label class="form-check-label" for="flexSwitchCheckDefault"><h5>Valor Total das Moedas</h5></label>						
+							<label class="form-check-label" for="flexSwitchCheckDefault"><h5 style="font-size: xx-large; padding-left:2.5rem;">R$26,95</h5></label>
 						</div>
 					  <div class="form-check form-switch">
-						<input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked">
-						<label class="form-check-label" for="flexSwitchCheckChecked"><h5>Sangria de Moedas</h5></label>
+						<label class="form-check-label" for="flexSwitchCheckChecked"><h5>Quantidade Totaldas Moedas</h5></label>
+						<label class="form-check-label" for="flexSwitchCheckDefault"><h5 style="font-size: xxx-large; padding-left:5.5rem;">14</h5></label>
 					  </div>
-					  <button type="button" class="btn-outline-dark btn" style="margin-top:1.5rem; box-shadow: 10px 5px 5px black;"><h3><strong>Gerar Troco</strong></h3></button>
+					  @*<button type="button" class="btn-outline-dark btn" style="margin-top:1.5rem; box-shadow: 10px 5px 5px black;"><h3><strong>Gerar Troco</strong></h3></button>*@
 					</fieldset>
 				</div>
 
-
-				<!--Componentes de Chamadas de Função-->
-
 				<!--Componente Abastecer Moedas-->
-				<div class="col card text-white bg-secondary mb-3" style="box-shadow: 10px 5px 5px black; min-width:400px; margin-top:1rem; text-align: center; display: none;">
+				<div class="col card text-white bg-success mb-3" style="box-shadow: 10px 5px 5px black; min-width:400px; margin-top:1rem; text-align: center;">
 					<div class="card-header">
 						<h1><strong>Abastecer Moedas</strong></h1>
 					</div>
@@ -69,27 +66,33 @@
 						</form>
 					</div>
 				</div>
+			</div>
+		</div>
 
 
+
+
+		<div class="row gx-5">	
+			<div class="container" style="display:flex;">
 				<!--Componente Sangria de Moedas-->
-				<div class="col card text-white bg-danger mb-3" style="box-shadow: 10px 5px 5px black; min-width:400px; margin-top:1rem; text-align: center; display: none;">
+				<div class="col-5 card text-white bg-danger mb-3" style="box-shadow: 10px 5px 5px black; min-width:350px; margin:1rem; text-align: center;">
 					<div class="card-header">
 						<h1><strong>Sangria de Moedas</strong></h1>
 					</div>
-					<div class="card-body">
+					<div class="card-body"
 						<form>
 								<h5>Escolha a Moeda Que Você Deseja Abastecer:</h5>
 								<div class="form-group">
 								<fieldset class="form-group">
 									<label for="customRange3" class="form-label"><h2>@nomesMoedas[@idMoedaSelected]</h2></label>
-									<input type="range" class="form-range" style="max-width:350px;" min="0" max="5" step="1" id="customRange3"@bind-value="@idMoedaSelected">
+									<input type="range" class="form-range" style="max-width:450px;" min="0" max="5" step="1" id="customRange3"@bind-value="@idMoedaSelected">
 								</fieldset>
 
 								<div class="input-group mb-3" style="display: flex; justify-content: center;">
 									<span class="input-group-text">$</span>
 										<input type="text" class="form-control" style="font-size: xx-large; text-align: center; max-width:200px;" aria-label="Amount (to the nearest dollar)" @bind-value="@qtdMoedasSelected">
 									<span class="input-group-text">$</span>
-									<button class="btn btn-danger" type="submit" id="button-addon2" @onclick="SangriaMoedas"><h5>Adicionar <br/> Quantidade</h5></button>
+									<button class="btn btn-danger" type="submit" id="button-addon2" @onclick="SangriaMoedas"><h5>Retirar <br/> Quantidade</h5></button>
 								</div>
 							</div>	
 						</form>
@@ -100,24 +103,22 @@
 
 
 				<!--Componente Gerar Troco-->
-				<div class="col card bg-light mb-3" style="box-shadow: 10px 5px 5px black; min-width:400px; margin-top:1rem; text-align: center;">
+				<div class="col card bg-light mb-3" style="box-shadow: 10px 5px 5px black; min-width:350px; margin:1rem; text-align: center;">
 					<div class="card-header">
 						<h1><strong>Gerar Troco</strong></h1>
 					</div>
 					<div class="card-body">
 						<form>
-								<h5>Escolha a Moeda Que Você Deseja Abastecer:</h5>
+								<h5>Entre com o Valor Para Grerar o Troco:</h5>
 								<div class="form-group">
 								<fieldset class="form-group">
 									<label for="customRange3" class="form-label"><h2>@nomesMoedas[@idMoedaSelected]</h2></label>
-									<input type="range" class="form-range" style="max-width:350px;" min="0" max="5" step="1" id="customRange3"@bind-value="@idMoedaSelected">
 								</fieldset>
 
 								<div class="input-group mb-3" style="display: flex; justify-content: center;">
 									<span class="input-group-text">$</span>
 										<input type="text" class="form-control" style="font-size: xx-large; text-align: center; max-width:200px;" aria-label="Amount (to the nearest dollar)" @bind-value="@vlrMoedaInputed">
-									<span class="input-group-text">$</span>
-									<button class="btn btn-secondary" type="submit" id="button-addon2"><h5>Adicionar <br/> Quantidade</h5></button>
+									<button class="btn btn-secondary" type="submit" id="button-addon2"><h5>Gerar Troco</h5></button>
 								</div>
 							</div>	
 						</form>
@@ -153,14 +154,6 @@
 		"R$0,01 centavo"
 	};
 
-	//Variáveis Display Managment
-	//public bool abasteceMoedaEstate { get; set; } = false;
-	//public bool sangriaMoedaEstate { get; set; } = false;
-
-	//static string abasteceMoedaDisplay { get; set; } = "";
-	//static string sangriaMoedaDisplay { get; set; } = "";
-	//static string geraTrocoDisplay { get; set; } = "";
-
 
 	//Metodo que Inicializa a Pagina
 	protected override void OnInitialized()
@@ -171,23 +164,6 @@
 		//VerificaCaixa(); //Função Para Debug;
 
 	}
-
-
-	// Função Debug
-	//public void VerificaCaixa()
-	//{
-	//	Console.WriteLine("=================================");
-	//	Console.WriteLine("Usuário Caixa: " + caixa.UserName);
-	//	foreach (var moeda in caixa.Moedas)
-	//	{
-	//		Console.WriteLine("----------------------");
-	//		Console.WriteLine("Moeda de: R$" + moeda.Nome);
-	//		Console.WriteLine("Valor de moeda em caixa: R$" + moeda.Qtd * moeda.Valor);
-	//		Console.WriteLine("Quantidade de moedas em caixa: " + moeda.Qtd);
-	//		Console.WriteLine("----------------------");
-	//	}
-	//	Console.WriteLine("=================================");
-	//}
 
 	private void AbasteceMoedas()
 	{
@@ -272,57 +248,5 @@
 		return geraListMoedas;
 	}
 
-	//protected override void OnParametersSet()
-	//{
-	//	base.OnParametersSet();
-	//	abasteceMoedaEstate = this.abasteceMoedaEstate;
-	//	sangriaMoedaEstate = this.sangriaMoedaEstate;
-	//}
-
-	//private void EventDisplayAbasteceM(ChangeEventArgs e)
-	//{
-	//	var abasteceMoedaEstate = e.Value;
-	//}
-	//private void EventDisplaySangriaM(ChangeEventArgs e)
-	//{
-	//	var sangriaMoedaEstate = e.Value;
-	//}
-
-	//private void GerenciaDisplay(ChangeEventArgs e)
-	//{
-	//	var abasteceMoedaEstate = e.Value;
-	//	//var sangriaMoedaEstate = e.Value;
-
-
-	//	Console.WriteLine(abasteceMoedaEstate);
-
-	//	//if (abasteceMoedaEstate == true)
-	//	//{
-	//	//	sangriaMoedaEstate = false;
-	//	//}
-	//	//else if (sangriaMoedaEstate)
-	//	//{
-	//	//	abasteceMoedaEstate = false;
-	//	//}
-	//	//else 
-	//	//{
-	//	//	abasteceMoedaEstate = false;
-	//	//	sangriaMoedaEstate = false;
-	//	//}
-
-	//	/*"display:none;";*/
-	//}
-
-	//	[ ] - Se 1 estiver Ativo, os outros 2 deverão estar Desativados.( )
-	//	[ ] - Se O Botão estiver ativo, tem que Garantir que ao desativar, ele vai ativar um dos Checkbox
-	//
-	//	[ ] = Sempre q o Botão for apertado ele desabilita os outros 2
-	//	[ ] = Sempre que um Rádio está ativo, o outro estará desativado.
-	//
-
-
-
-
-
-
+	
 }

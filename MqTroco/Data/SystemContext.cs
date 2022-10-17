@@ -5,18 +5,18 @@ namespace MqTroco.Data
 	public class SystemContext : DbContext
 	{
 
-		public SystemContext(DbContextOptions options):base(options)
+		public SystemContext(DbContextOptions options) : base(options)
 		{
 
 		}
 
-		public SystemContext():base()
+		public SystemContext() : base()
 		{
 
 		}
 
 		public DbSet<Caixa> Caixa { get; set; }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
 			string conn = "Server=localhost\\SQLEXPRESS01;Database=DbMaquinaTroco;Trusted_Connection=True;";
 
@@ -27,5 +27,5 @@ namespace MqTroco.Data
 		}
 
 	}
-	
+
 }

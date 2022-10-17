@@ -8,10 +8,10 @@
 				<div class="row gx-5">
 				<div class="col card text-white bg-info mb-3" style="box-shadow: 10px 5px 5px black; min-width:400px; margin-top:1rem; text-align: center;">
 					<div class="card-header">
-						<h2>Gerenciando o Seu Caixa</h2>
+						<h2>Gerenciando Suas Moedas</h2>
 					</div>
 					<div class="card-body">
-					<h4 style="margin-top:1.5rem;"> São 3 Operações para lhe ajudar a gerenciar o seu caixa de uma forma mais organizada.</h4>
+					<h4 style="margin-top:1.5rem;"> São 3 Operações para lhe ajudar a calcular seu troco de uma forma mais organizada.</h4>
 					<h3 style="margin-top:1.5rem;"> Cada moeda vale muito!.</h3>
 					</div>
 				</div>
@@ -40,7 +40,7 @@
 						{
 							<li class="list-group-item d-flex justify-content-between align-items-center">
 									<h5>Moedas @moeda.Nome</h5>
-								<span class="badge bg-primary rounded-pill">@moeda.Qtd</span>
+									<span class="badge bg-primary rounded-pill-lg" style="font-size:1rem;">@moeda.Qtd</span>
 							</li>	
 						}
 					</ul>
@@ -79,9 +79,6 @@
 		//Buscar estado atual do caixa;
 		//caixa = await caixaLogic.List();
 		IniciaCaixa();
-
-
-		//VerificaCaixa(); //Função Para Debug;
 
 	}
 
