@@ -84,42 +84,12 @@
 		}
 		else
 		{
+			Console.WriteLine("TELA CAIXA - Buscando informações no Db");
 			moedasCaixa = await moedaLogic.List();
+			Console.WriteLine("Buscou " + moedasCaixa.Count() + "Moedas no Db.");
+			Console.WriteLine("------------------------------------------------------");
 		}
 
-		//Console.WriteLine("Buscando informações no Db");
-		//moedasCaixa = await moedaLogic.List();
-		//Console.WriteLine("OnInitialized");
-		//Console.WriteLine(moedasCaixa.Count());
-		//moedasCaixa = await GeraCaixaMoedas();
-		//Console.WriteLine("Fim do processo!");
-		//Console.WriteLine(moedasCaixa.Count());
-
 	}
-
-	//public async Task<List<Moeda>> GeraCaixaMoedas()
-	//{
-	//	//List<Moeda> geraListMoedas = new List<Moeda>();
-	//	//await moedaLogic.Create(new Moeda("R$1,00 Real") { Valor = 1.00, Qtd = 0 });
-	//	//await geraListMoedas.Add(new Moeda("R$1,00 Real") { Valor = 1.00, Qtd = 0 });
-	//	//geraListMoedas.Add(new Moeda("R$0,50 centavos") { Valor = 0.50, Qtd = 0 });
-	//	//geraListMoedas.Add(new Moeda("R$0,25 centavos") {  Valor = 0.25, Qtd = 0 });
-	//	//geraListMoedas.Add(new Moeda("R$0,10 centavos") {  Valor = 0.10, Qtd = 0 });
-	//	//geraListMoedas.Add(new Moeda("RS0,05 centavos") { Valor = 0.05, Qtd = 0 });
-	//	//geraListMoedas.Add(new Moeda("R$0,01 centavo") { Valor = 0.01, Qtd = 0 });
-	//	//Console.WriteLine("GeraCaixaMoedas Caixa!");
-	//	//Console.WriteLine(moedaLogic.Count()); // Seis
-	//	//return geraListMoedas;
-
-	//	//Salva Informações no Banco de Dados;
-	//	//foreach (var item in geraListMoedas)
-	//	//{
-	//	//	await moedaLogic.Create(item);
-	//	//	Console.WriteLine("Mais 1 moeda no Db");
-	//	//}
-
-	//	return geraListMoedas;
-	//	////Atualiza a Pagina;
-	//}
 
 }
