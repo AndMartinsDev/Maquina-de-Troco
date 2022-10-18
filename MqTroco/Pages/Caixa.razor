@@ -157,13 +157,14 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		//Console.WriteLine("Buscando informações no Db");
-		//moedasCaixa = await moedaLogic.List();
-		Console.WriteLine("OnInitialized");
-		Console.WriteLine(moedasCaixa.Count());
-		moedasCaixa = await GeraCaixaMoedas();
-		Console.WriteLine("Fim do processo!");
-		Console.WriteLine(moedasCaixa.Count());
+		Console.WriteLine("Buscando informações no Db");
+		moedasCaixa = await moedaLogic.List();
+		Console.WriteLine("Buscou " + moedasCaixa.Count() + "Moedas no Db.");
+		//Console.WriteLine("OnInitialized");
+		//Console.WriteLine(moedasCaixa.Count());
+		//moedasCaixa = await GeraCaixaMoedas();
+		//Console.WriteLine("Fim do processo!");
+		//Console.WriteLine(moedasCaixa.Count());
 
 	}
 
@@ -220,29 +221,29 @@
 	}
 
 
-	public async Task<List<Moeda>> GeraCaixaMoedas()
-	{
-		List<Moeda> geraListMoedas = new List<Moeda>();
-		geraListMoedas.Add(new Moeda() { Nome = "R$1,00 Real", Valor = 1.00, Qtd = 0 });
-		geraListMoedas.Add(new Moeda() { Nome = "R$0,50 centavos", Valor = 0.50, Qtd = 0 });
-		geraListMoedas.Add(new Moeda() { Nome = "R$0,25 centavos", Valor = 0.25, Qtd = 0 });
-		geraListMoedas.Add(new Moeda() { Nome = "R$0,10 centavos", Valor = 0.10, Qtd = 0 });
-		geraListMoedas.Add(new Moeda() { Nome = "RS0,05 centavos", Valor = 0.05, Qtd = 0 });
-		geraListMoedas.Add(new Moeda() { Nome = "R$0,01 centavo", Valor = 0.01, Qtd = 0 });
-		Console.WriteLine("GeraCaixaMoedas Caixa!");
-		Console.WriteLine(geraListMoedas.Count()); // Seis
-		return geraListMoedas;
+	//public async Task<List<Moeda>> GeraCaixaMoedas()
+	//{
+	//	List<Moeda> geraListMoedas = new List<Moeda>();
+	//	geraListMoedas.Add(new Moeda() { Nome = "R$1,00 Real", Valor = 1.00, Qtd = 0 });
+	//	geraListMoedas.Add(new Moeda() { Nome = "R$0,50 centavos", Valor = 0.50, Qtd = 0 });
+	//	geraListMoedas.Add(new Moeda() { Nome = "R$0,25 centavos", Valor = 0.25, Qtd = 0 });
+	//	geraListMoedas.Add(new Moeda() { Nome = "R$0,10 centavos", Valor = 0.10, Qtd = 0 });
+	//	geraListMoedas.Add(new Moeda() { Nome = "RS0,05 centavos", Valor = 0.05, Qtd = 0 });
+	//	geraListMoedas.Add(new Moeda() { Nome = "R$0,01 centavo", Valor = 0.01, Qtd = 0 });
+	//	Console.WriteLine("GeraCaixaMoedas Caixa!");
+	//	Console.WriteLine(geraListMoedas.Count()); // Seis
+	//	return geraListMoedas;
 
-		//Salva Informações no Banco de Dados;
-		//foreach (var item in geraListMoedas)
-		//{
-		//	await moedaLogic.Create(item);
-		//	Console.WriteLine("Mais 1 moeda no Db");
-		//}
+	//	//Salva Informações no Banco de Dados;
+	//	//foreach (var item in geraListMoedas)
+	//	//{
+	//	//	await moedaLogic.Create(item);
+	//	//	Console.WriteLine("Mais 1 moeda no Db");
+	//	//}
 
-		//return await moedaLogic.List();
-		////Atualiza a Pagina;
-	}
+	//	//return await moedaLogic.List();
+	//	////Atualiza a Pagina;
+	//}
 
 	
 }
