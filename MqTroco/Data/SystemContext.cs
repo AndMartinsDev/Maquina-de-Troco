@@ -1,12 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Diagnostics;
 
 namespace MqTroco.Data
 {
-	[DebuggerDisplay($"{{{nameof(GetDebuggerDisplay)}(),nq}}")]
 	public class SystemContext : DbContext
 	{
-
 		public SystemContext(DbContextOptions options) : base(options)
 		{
 
@@ -28,10 +25,6 @@ namespace MqTroco.Data
 
 		}
 
-		private string GetDebuggerDisplay()
-		{
-			return ToString();
-		}
 	}
 
 }
