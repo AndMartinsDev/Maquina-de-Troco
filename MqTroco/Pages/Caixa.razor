@@ -8,9 +8,8 @@
 	<div class="card-body" style="padding:3rem;">
 			<div class="container" style="display:flex;">
 				<div class="row gx-5">	
-			
-					
-				<!--Componente que Gera o Caixa-->
+				
+				<!--Componente que Gera info do Caixa na tela-->
 				<div class="col" style="min-width:350px; margin-top:0;">
 					<ul class="list-group">
 						<a href="#" class="txt-center list-group-item list-group-item-action active">
@@ -26,7 +25,7 @@
 					</ul>
 				</div>
 
-				<!--Componente de Seleção dos Componentes de Chamada de Função-->
+				<!--Componente de Informação (qtd Moedas e Valor Total)-->
 				<div class="col-1" style="padding:2rem; min-width:350px; display: flex; justify-content: center;">
 					<fieldset class="form-group">
 						<legend class="mt-4"><h1 style="padding-left:1.5rem;">Informações</h1></legend>
@@ -38,7 +37,6 @@
 						<label class="form-check-label" for="flexSwitchCheckChecked"><h5>Quantidade Totaldas Moedas</h5></label>
 						<label class="form-check-label" for="flexSwitchCheckDefault"><h5 style="font-size: xxx-large; padding-left:5.5rem;">14</h5></label>
 					  </div>
-					  @*<button type="button" class="btn-outline-dark btn" style="margin-top:1.5rem; box-shadow: 10px 5px 5px black;"><h3><strong>Gerar Troco</strong></h3></button>*@
 					</fieldset>
 				</div>
 
@@ -69,9 +67,6 @@
 			</div>
 		</div>
 
-
-
-
 		<div class="row gx-5">	
 			<div class="container" style="display:flex;">
 				<!--Componente Sangria de Moedas-->
@@ -99,9 +94,6 @@
 					</div>
 				</div>
 
-
-
-
 				<!--Componente Gerar Troco-->
 				<div class="col card bg-light mb-3" style="box-shadow: 10px 5px 5px black; min-width:350px; margin:1rem; text-align: center;">
 					<div class="card-header">
@@ -123,19 +115,14 @@
 							</div>	
 						</form>
 					</div>
-				</div>
-
-
-
-				
+				</div>				
 			</div>
 		</div>
 	</div>
 </div>
 
-
 @code {
-	//Instanciação dos Objetos
+	//Instanciação dos Da Classe Principal e a Classe q faz a conexão dom o Db.
 	public List<Moeda> moedasCaixa = new List<Moeda>();
 	MoedaLogic moedaLogic = new MoedaLogic();
 
@@ -156,10 +143,8 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		Console.WriteLine("TELA CAIXA - Buscando informações no Db");
+		//Chamada do método que cusca as informações do Banco e Popula a tela;
 		moedasCaixa = await moedaLogic.List();
-		Console.WriteLine("Buscou " + moedasCaixa.Count() + "Moedas no Db.");
-		Console.WriteLine("------------------------------------------------------");
 	}
 
 	private void AbasteceMoedas()
@@ -190,28 +175,30 @@
 		//Atualiza a Pagina;
 	}
 
-
-	private void GeraTroco(double valorCompra)
+	private void GeraTroco(double valorEntrada)
 	{
-		//Copia Caixa, para verificar se a operação é viavel;
-		//private List<Moeda> moedasTroco;
-		foreach (var moeda in moedasCaixa)
+		//Copiar o Caixa, para verificar se a operação é viavel;
+		List<Moeda> copiaCaixa = new List<Moeda>();
+		copiaCaixa = moedasCaixa;
+
+		foreach (var moeda in copiaCaixa)
 		{
-			double qtdMoedaTroco = valorCompra / moeda.Valor;
-			double restoDivisao = valorCompra % moeda.Valor;
+			double qtdMoedaTroco = valorEntrada / moeda.Valor;
+			double restoDivisao = valorEntrada % moeda.Valor;
 			if(moeda.Qtd > qtdMoedaTroco)
 			{
 				moeda.Qtd -= (int)qtdMoedaTroco;
-				valorCompra = restoDivisao;
+				valorEntrada = restoDivisao;
 			}
 			else
 			{
 				break;
-				//Mensagem de Alerta;
+				//Mensagem de Alerta;(Não implementada);
 			}
 		}
 		//Copia Lista de Moedas da Operação para Lista de Moedas Atual;
-		//Envia operações para o banco;
+		moedasCaixa = copiaCaixa;
+		//Função que envia operações para o banco;
+		//Atualiza a Pagina;
 	}
-
 }
