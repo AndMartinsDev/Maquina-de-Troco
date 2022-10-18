@@ -15,7 +15,7 @@ namespace MqTroco.Data
 
 		}
 
-		public DbSet<Caixa> Caixa { get; set; }
+		public DbSet<Moeda> Moeda { get; set; }
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
 			string conn = "Server=localhost\\SQLEXPRESS01;Database=DbMaquinaTroco;Trusted_Connection=True;";

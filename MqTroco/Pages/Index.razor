@@ -36,7 +36,7 @@
 						<a href="#" class="txt-center list-group-item list-group-item-action active">
 							<h2 style="tex-align:center; text-align:center;">$$ CAIXA $$</h2>
 						</a>
-						@foreach (var moeda in caixa.Moedas)
+						@foreach (var moeda in moedasCaixa)
 						{
 							<li class="list-group-item d-flex justify-content-between align-items-center">
 									<h5>Moedas @moeda.Nome</h5>
@@ -53,9 +53,8 @@
 
 @code {
 	//Instanciação dos Objetos
-	public List<Moeda> moedasList = new List<Moeda>();
-	public Caixa caixa = new Caixa();
-	CaixaLogics caixaLogic = new CaixaLogics();
+	List<Moeda> moedasCaixa = new List<Moeda>();
+	MoedaLogic moedaLogic = new MoedaLogic();
 
 	//Variáveis auxiliares do Caixa renderização de Elementos na tela
 	static string nomeMoedaSelected { get; set; } = "";
@@ -73,43 +72,41 @@
 	};
 
 
-	//Metodo que Inicializa a Pagina
 	protected override async Task OnInitializedAsync()
 	{
-		//Buscar estado atual do caixa;
-		//caixa = await caixaLogic.List();
-		IniciaCaixa();
+		//Console.WriteLine("Buscando informações no Db");
+		//moedasCaixa = await moedaLogic.List();
+		Console.WriteLine("OnInitialized");
+		Console.WriteLine(moedasCaixa.Count());
+		moedasCaixa = await GeraCaixaMoedas();
+		Console.WriteLine("Fim do processo!");
+		Console.WriteLine(moedasCaixa.Count());
 
 	}
 
-	public void IniciaCaixa()
-	{
-		if (moedasList.Count() < 1)
-		{
-			//Console.WriteLine("Iniciar Caixa!");
-			//Console.WriteLine(moedasList.Count());
-			caixa.Moedas = GeraCaixaMoedas();
-		}
-		else
-		{
-			//Console.WriteLine("Caixa NÃO Iniciado!");
-		}
 
-	}
-
-	static List<Moeda> GeraCaixaMoedas()
+	public async Task<List<Moeda>> GeraCaixaMoedas()
 	{
 		List<Moeda> geraListMoedas = new List<Moeda>();
-		geraListMoedas.Add(new Moeda() { Id = 1, Nome = "R$1,00 Real", Valor = 1.00, Qtd = 0 });
-		geraListMoedas.Add(new Moeda() { Id = 2, Nome = "R$0,50 centavos", Valor = 0.50, Qtd = 0 });
-		geraListMoedas.Add(new Moeda() { Id = 3, Nome = "R$0,25 centavos", Valor = 0.25, Qtd = 0 });
-		geraListMoedas.Add(new Moeda() { Id = 4, Nome = "R$0,10 centavos", Valor = 0.10, Qtd = 0 });
-		geraListMoedas.Add(new Moeda() { Id = 5, Nome = "RS0,05 centavos", Valor = 0.05, Qtd = 0 });
-		geraListMoedas.Add(new Moeda() { Id = 6, Nome = "R$0,01 centavo", Valor = 0.01, Qtd = 0 });
+		geraListMoedas.Add(new Moeda() { Nome = "R$1,00 Real", Valor = 1.00, Qtd = 0 });
+		geraListMoedas.Add(new Moeda() { Nome = "R$0,50 centavos", Valor = 0.50, Qtd = 0 });
+		geraListMoedas.Add(new Moeda() { Nome = "R$0,25 centavos", Valor = 0.25, Qtd = 0 });
+		geraListMoedas.Add(new Moeda() { Nome = "R$0,10 centavos", Valor = 0.10, Qtd = 0 });
+		geraListMoedas.Add(new Moeda() { Nome = "RS0,05 centavos", Valor = 0.05, Qtd = 0 });
+		geraListMoedas.Add(new Moeda() { Nome = "R$0,01 centavo", Valor = 0.01, Qtd = 0 });
+		Console.WriteLine("GeraCaixaMoedas Caixa!");
+		Console.WriteLine(geraListMoedas.Count()); // Seis
+		return geraListMoedas;
 
 		//Salva Informações no Banco de Dados;
-		//Atualiza a Pagina;
-		return geraListMoedas;
+		//foreach (var item in geraListMoedas)
+		//{
+		//	await moedaLogic.Create(item);
+		//	Console.WriteLine("Mais 1 moeda no Db");
+		//}
+
+		 //return await moedaLogic.List();
+		////Atualiza a Pagina;
 	}
 
 }
