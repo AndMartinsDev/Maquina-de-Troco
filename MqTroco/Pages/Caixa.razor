@@ -143,12 +143,14 @@
 
 	protected override async Task OnInitializedAsync()
 	{
+		Console.WriteLine("[Caixa] - Buscando info caixa Db");
 		//Chamada do método que cusca as informações do Banco e Popula a tela;
 		moedasCaixa = await moedaLogic.List();
 	}
 
 	private void AbasteceMoedas()
 	{
+		Console.WriteLine("[Caixa] - AbasteceMoeda");
 		foreach (var moeda in moedasCaixa)
 		{
 			if (moeda.Id == idMoedaSelected)
@@ -163,6 +165,7 @@
 
 	private void SangriaMoedas()
 	{
+		Console.WriteLine("[Caixa] - SangriaMoedas");
 		foreach (var moeda in moedasCaixa)
 		{
 			if (moeda.Id == idMoedaSelected && moeda.Qtd > qtdMoedasSelected)
@@ -177,6 +180,7 @@
 
 	private void GeraTroco(double valorEntrada)
 	{
+		Console.WriteLine("[Caixa] - GeraTroco");
 		//Copiar o Caixa, para verificar se a operação é viavel;
 		List<Moeda> copiaCaixa = new List<Moeda>();
 		copiaCaixa = moedasCaixa;

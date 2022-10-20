@@ -75,6 +75,7 @@
 		//Verifica se o caixa foi iniciado, caso não inicializa Com Valor zero e se sim busca as informações no Db.
 		if (moedasCaixa.Count < 1)
 		{
+			Console.WriteLine("[Index] - Criando Caixa Zerado");
 			await moedaLogic.Create(new Moeda("R$1,00 Real") { Valor = 1.00, Qtd = 0 });
 			await moedaLogic.Create(new Moeda("R$0,50 centavos") { Valor = 0.50, Qtd = 0 });
 			await moedaLogic.Create(new Moeda("R$0,25 centavos") { Valor = 0.25, Qtd = 0 });
@@ -83,7 +84,8 @@
 			await moedaLogic.Create(new Moeda("R$0,01 centavo") { Valor = 0.01, Qtd = 0 });
 		}
 		else
-		{	
+		{
+			Console.WriteLine("[Index] - Buscando info caixa Db");
 			moedasCaixa = await moedaLogic.List();
 		}
 
