@@ -1,7 +1,7 @@
 ﻿@page "/"
 
 <PageTitle>Home</PageTitle>
-@*<div class="card border-primary mb-1" style="box-shadow:10px 5px 5px black; min-height:40rem;">
+<div class="card border-primary mb-1" style="box-shadow:10px 5px 5px black; min-height:40rem;">
   <div class="card-header" style="display:flex"><h1> - Bem Vindo!!! <smal> - Esta é a Maquina de Troco -</smal></h1></div>
 	<div class="card-body" style="padding:3rem;">
 			<div class="container" style="display:flex;">
@@ -48,79 +48,43 @@
 			</div>
 		</div>
 	</div>
-</div>*@
-
-
-	<EditForm Model="moedasCaixa">
-	<p>
-		<lable>Moeda</lable>
-		<InputText @bind-Value="moedasCaixa[0].Nome"></InputText>
-	</p>
-	<p>
-		<lable>Moeda</lable>
-		<InputText @bind-Value="moedasCaixa[1].Nome"></InputText>
-	</p>
-	<p>
-		<lable>Moeda</lable>
-		<InputText @bind-Value="moedasCaixa[2].Nome"></InputText>
-	</p>
-	<p>
-		<lable>Moeda</lable>
-		<InputText @bind-Value="moedasCaixa[3].Nome"></InputText>
-	</p>
-	<p>
-		<lable>Moeda</lable>
-		<InputText @bind-Value="moedasCaixa[4].Nome"></InputText>
-	</p>
-	<p>
-		<lable>Moeda</lable>
-		<InputText @bind-Value="moedasCaixa[5].Nome"></InputText>
-	</p>
-
-</EditForm>
+</div>
 
 
 
 @code {
 	//Instanciação dos Objetos
 	List<Moeda> moedasCaixa = new List<Moeda>();
+	Moeda moeda = new Moeda();
 	MoedaLogic moedaLogic = new MoedaLogic();
-
-	//Variáveis auxiliares do Caixa renderização de Elementos na tela, Usando Biding, one-way e two-way data dind.
-	static string nomeMoedaSelected { get; set; } = "";
-	static int idMoedaSelected { get; set; } = 0;
-	static int qtdMoedasSelected { get; set; } = 0;
-	static double vlrMoedaInputed { get; set; } = 0.00;
-	static List<string> nomesMoedas = new List<string>()
-	{
-		"R$1,00 Real",
-		"R$0,50 centavos",
-		"R$0,25 centavos",
-		"R$0,10 centavos",
-		"RS0,05 centavos",
-		"R$0,01 centavo"
-	};
 
 	protected override async Task OnInitializedAsync()
 	{
-		Console.WriteLine("[Index] - Buscando info caixa Db");
+		//DELETA  TUDO
+		//moedasCaixa = await moedaLogic.List();
+		//foreach (var item in moedasCaixa)
+		//{
+		//	await moedaLogic.Delete(item.Id);
+		//}
+	
+
+		Console.WriteLine("[Index] - Buscando info caixa Db Init");
 		moedasCaixa = await moedaLogic.List();
+	
 		//Verifica se o caixa foi iniciado, caso não inicializa Com Valor zero e se sim busca as informações no Db.
-		//if (moedasCaixa.Count < 1)
-		//{
-		//	Console.WriteLine("[Index] - Criando Caixa Zerado");
-		//	await moedaLogic.Create(new Moeda("R$1,00 Real") { Valor = 1.00, Qtd = 0 });
-		//	await moedaLogic.Create(new Moeda("R$0,50 centavos") { Valor = 0.50, Qtd = 0 });
-		//	await moedaLogic.Create(new Moeda("R$0,25 centavos") { Valor = 0.25, Qtd = 0 });
-		//	await moedaLogic.Create(new Moeda("R$0,10 centavos") { Valor = 0.10, Qtd = 0 });
-		//	await moedaLogic.Create(new Moeda("RS0,05 centavos") { Valor = 0.05, Qtd = 0 });
-		//	await moedaLogic.Create(new Moeda("R$0,01 centavo") { Valor = 0.01, Qtd = 0 });
-		//}
-		//else
-		//{
-		//	Console.WriteLine("[Index] - Buscando info caixa Db");
-		//	moedasCaixa = await moedaLogic.List();
-		//}
+		if (moedasCaixa.Count < 1)
+		{
+			Console.WriteLine("[Index] - Criando Caixa Zerado");
+			await moedaLogic.Create(new Moeda() { Nome = "R$1,00 Real", Valor = 1.00, Qtd = 0 });
+			await moedaLogic.Create(new Moeda() { Nome = "R$0,50 centavos", Valor = 0.50, Qtd = 0 });
+			await moedaLogic.Create(new Moeda() { Nome = "R$0,25 centavos", Valor = 0.25, Qtd = 0 });
+			await moedaLogic.Create(new Moeda() { Nome = "R$0,10 centavos", Valor = 0.10, Qtd = 0 });
+			await moedaLogic.Create(new Moeda() { Nome = "RS0,05 centavos", Valor = 0.05, Qtd = 0 });
+			await moedaLogic.Create(new Moeda() { Nome = "R$0,01 centavo", Valor = 0.01, Qtd = 0 });
+
+			Console.WriteLine("[Index] - Buscando info caixa Db IF");
+			moedasCaixa = await moedaLogic.List();
+		}
 
 	}
 

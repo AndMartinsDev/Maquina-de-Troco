@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MqTroco.Data;
+using System.Collections.Generic;
 
 namespace MqTroco.Logic
 {
@@ -17,13 +18,13 @@ namespace MqTroco.Logic
 			return await _systemContext.Moeda.ToListAsync();
 		}
 
-		public async Task Create(Moeda moeda)
+        public async Task Create(Moeda moeda)
 		{
-			await _systemContext.Moeda.AddAsync(moeda);
+            await _systemContext.Moeda.AddAsync(moeda);
 			await _systemContext.SaveChangesAsync();
 		}
 
-		public async Task Edit(Moeda moeda)
+        public async Task Edit(Moeda moeda)
 		{
 			_systemContext.Entry(moeda).State = EntityState.Modified;
 			await _systemContext.SaveChangesAsync();
@@ -40,7 +41,8 @@ namespace MqTroco.Logic
 			}
 		}
 
-		public async Task<Moeda> Get(int id)
+
+        public async Task<Moeda> Get(int id)
 		{
 			var moeda = await _systemContext.Moeda.FirstOrDefaultAsync(x => x.Id == id);
 			return moeda;
