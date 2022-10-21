@@ -18,6 +18,11 @@ namespace MqTroco.Logic
 			return await _systemContext.Moeda.ToListAsync();
 		}
 
+		//public async Task AbasteceMoedaCaixa(string nome, int quantidade)
+		//{
+
+		//}
+
         public async Task Create(Moeda moeda)
 		{
             await _systemContext.Moeda.AddAsync(moeda);

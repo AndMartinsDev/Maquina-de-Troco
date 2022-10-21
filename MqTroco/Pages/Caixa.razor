@@ -50,13 +50,13 @@
 								<h5>Escolha a Moeda Que Você Deseja Abastecer:</h5>
 								<div class="form-group">
 								<fieldset class="form-group">
-									<label for="customRange3" class="form-label"><h2>@nomesMoedas[@idMoedaSelected]</h2></label>
-									<input type="range" class="form-range" style="max-width:350px;" min="0" max="5" step="1" id="customRange3"@bind-value="@idMoedaSelected">
+									<label for="customRange3" class="form-label"><h2>@nomesMoedasAbasteceMoedas[@idMoedaSelectedAbasteceMoedas]</h2></label>
+									<input type="range" class="form-range" style="max-width:350px;" min="0" max="5" step="1" id="customRange3"@bind-value="@idMoedaSelectedAbasteceMoedas">
 								</fieldset>
 
 								<div class="input-group mb-3" style="display: flex; justify-content: center;">
 									<span class="input-group-text">$</span>
-										<input type="text" class="form-control" style="font-size: xx-large; text-align: center; max-width:200px;" aria-label="Amount (to the nearest dollar)" @bind-value="@qtdMoedasSelected">
+										<input type="text" class="form-control" style="font-size: xx-large; text-align: center; max-width:200px;" aria-label="Amount (to the nearest dollar)" @bind-value="@qtdMoedasSelectedAbasteceMoedas">
 									<span class="input-group-text">$</span>
 									<button class="btn btn-secondary" type="button" id="button-addon2" @onclick="AbasteceMoedas"><h5>Adicionar <br/> Quantidade</h5></button>
 								</div>
@@ -79,13 +79,13 @@
 								<h5>Escolha a Moeda Que Você Deseja Abastecer:</h5>
 								<div class="form-group">
 								<fieldset class="form-group">
-									<label for="customRange3" class="form-label"><h2>@nomesMoedas[@idMoedaSelected]</h2></label>
-									<input type="range" class="form-range" style="max-width:450px;" min="0" max="5" step="1" id="customRange3"@bind-value="@idMoedaSelected">
+									<label for="customRange3" class="form-label"><h2>@nomesMoedasSangriaMoedas[@idMoedaSelectedSangriaMoedas]</h2></label>
+									<input type="range" class="form-range" style="max-width:450px;" min="0" max="5" step="1" id="customRange3"@bind-value="@idMoedaSelectedSangriaMoedas">
 								</fieldset>
 
 								<div class="input-group mb-3" style="display: flex; justify-content: center;">
 									<span class="input-group-text">$</span>
-										<input type="text" class="form-control" style="font-size: xx-large; text-align: center; max-width:200px;" aria-label="Amount (to the nearest dollar)" @bind-value="@qtdMoedasSelected">
+										<input type="text" class="form-control" style="font-size: xx-large; text-align: center; max-width:200px;" aria-label="Amount (to the nearest dollar)" @bind-value="@qtdMoedasSelectedSangriaMoedas">
 									<span class="input-group-text">$</span>
 									<button class="btn btn-danger" type="button" id="button-addon2" @onclick="SangriaMoedas"><h5>Retirar <br/> Quantidade</h5></button>
 								</div>
@@ -104,12 +104,12 @@
 								<h5>Entre com o Valor Para Grerar o Troco:</h5>
 								<div class="form-group">
 								<fieldset class="form-group">
-									<label for="customRange3" class="form-label"><h2>@nomesMoedas[@idMoedaSelected]</h2></label>
+									<label for="customRange3" class="form-label"><h2>@nomesMoedasGeraTroco[@idMoedaSelectedGeraTroco]</h2></label>
 								</fieldset>
 
 								<div class="input-group mb-3" style="display: flex; justify-content: center;">
 									<span class="input-group-text">$</span>
-										<input type="text" class="form-control" style="font-size: xx-large; text-align: center; max-width:200px;" aria-label="Amount (to the nearest dollar)" @bind-value="@vlrMoedaInputed">
+										<input type="text" class="form-control" style="font-size: xx-large; text-align: center; max-width:200px;" aria-label="Amount (to the nearest dollar)" @bind-value="@vlrMoedaInputedGeraTroco">
 									<button class="btn btn-secondary" type="button" id="button-addon2"><h5>Gerar Troco</h5></button>
 								</div>
 							</div>	
@@ -126,12 +126,19 @@
 	public List<Moeda> moedasCaixa = new List<Moeda>();
 	MoedaLogic moedaLogic = new MoedaLogic();
 
-	//Variáveis auxiliares do Caixa renderização de Elementos na tela
-	static string nomeMoedaSelected { get; set; } = "";
-	static int idMoedaSelected { get; set; } = 0;
-	static int qtdMoedasSelected { get; set; } = 0;
-	static double vlrMoedaInputed { get; set; } = 0.00;
-	static List<string> nomesMoedas = new List<string>()
+	protected override async Task OnInitializedAsync()
+	{
+		Console.WriteLine("[Caixa] - Buscando info caixa Db");
+		//Chamada do método que cusca as informações do Banco e Popula a tela;
+		moedasCaixa = await moedaLogic.List();
+	}
+
+	//Variáveis auxiliares de AbasteceMoedas renderização de Elementos na tela e chamada da função.
+	static string nomeMoedaSelectedAbasteceMoedas { get; set; } = "";
+	static int idMoedaSelectedAbasteceMoedas { get; set; } = 0;
+	static int qtdMoedasSelectedAbasteceMoedas { get; set; } = 0;
+	static double vlrMoedaInputedAbasteceMoedas { get; set; } = 0.00;
+	static List<string> nomesMoedasAbasteceMoedas = new List<string>()
 	{
 		"R$1,00 Real",
 		"R$0,50 centavos",
@@ -141,42 +148,81 @@
 		"R$0,01 centavo"
 	};
 
-	protected override async Task OnInitializedAsync()
-	{
-		Console.WriteLine("[Caixa] - Buscando info caixa Db");
-		//Chamada do método que cusca as informações do Banco e Popula a tela;
-		moedasCaixa = await moedaLogic.List();
-	}
-
-	private void AbasteceMoedas()
+	private async void AbasteceMoedas()
 	{
 		Console.WriteLine("[Caixa] - AbasteceMoeda");
 		foreach (var moeda in moedasCaixa)
 		{
-			if (moeda.Id == idMoedaSelected)
+			if (moeda.Nome == nomesMoedasAbasteceMoedas[@idMoedaSelectedAbasteceMoedas])
 			{
-				moeda.Qtd += qtdMoedasSelected;
+				//Console.WriteLine("Moeda . nome" + moeda.Nome);
+				//Console.WriteLine("Nome Selecionado Abst Moeda" + nomesMoedasAbasteceMoedas[@idMoedaSelectedAbasteceMoedas]);
+				moeda.Qtd += qtdMoedasSelectedAbasteceMoedas;
+				//Console.WriteLine("Moeda . nome Pós Opereação" + moeda.Nome);
+				//Envia o valor atualizado do caixa para o BD;
+				await moedaLogic.Edit(moeda);
 			}
 		}
-		qtdMoedasSelected = 0;
-		//Envia o valor atualizado do caixa para o BD;
+		//foreach (var item in moedasCaixa)
+		//{
+		//	Console.WriteLine("Moedas end");
+		//	Console.WriteLine(item.Id);
+		//	Console.WriteLine(item.Nome);
+		//	Console.WriteLine(item.Valor);
+		//	Console.WriteLine(item.Qtd);
+		//	Console.WriteLine("--------------");
+		//}
+		qtdMoedasSelectedAbasteceMoedas = 0;
 		//Atualiza a Pagina;
+		StateHasChanged();
 	}
+
+	//Variáveis auxiliares do Caixa renderização de Elementos na tela
+	static string nomeMoedaSelectedSangriaMoedas { get; set; } = "";
+	static int idMoedaSelectedSangriaMoedas { get; set; } = 0;
+	static int qtdMoedasSelectedSangriaMoedas { get; set; } = 0;
+	static double vlrMoedaInputedSangriaMoedas { get; set; } = 0.00;
+	static List<string> nomesMoedasSangriaMoedas = new List<string>()
+	{
+		"R$1,00 Real",
+		"R$0,50 centavos",
+		"R$0,25 centavos",
+		"R$0,10 centavos",
+		"RS0,05 centavos",
+		"R$0,01 centavo"
+	};
 
 	private void SangriaMoedas()
 	{
 		Console.WriteLine("[Caixa] - SangriaMoedas");
 		foreach (var moeda in moedasCaixa)
 		{
-			if (moeda.Id == idMoedaSelected && moeda.Qtd > qtdMoedasSelected)
+			if (moeda.Id == idMoedaSelectedSangriaMoedas && moeda.Qtd > qtdMoedasSelectedSangriaMoedas)
 			{
-				moeda.Qtd -= qtdMoedasSelected;
+				moeda.Qtd -= qtdMoedasSelectedSangriaMoedas;
 			}
 		}
-		qtdMoedasSelected = 0;
+		qtdMoedasSelectedSangriaMoedas = 0;
 		//Envia os valores atualizados do caixa para o banco;
 		//Atualiza a Pagina;
+		StateHasChanged();
 	}
+
+
+	//Variáveis auxiliares do Caixa renderização de Elementos na tela
+	static string nomeMoedaSelectedGeraTroco { get; set; } = "";
+	static int idMoedaSelectedGeraTroco { get; set; } = 0;
+	static int qtdMoedasSelectedGeraTroco { get; set; } = 0;
+	static double vlrMoedaInputedGeraTroco { get; set; } = 0.00;
+	static List<string> nomesMoedasGeraTroco = new List<string>()
+	{
+		"R$1,00 Real",
+		"R$0,50 centavos",
+		"R$0,25 centavos",
+		"R$0,10 centavos",
+		"RS0,05 centavos",
+		"R$0,01 centavo"
+	};
 
 	private void GeraTroco(double valorEntrada)
 	{
@@ -204,5 +250,6 @@
 		moedasCaixa = copiaCaixa;
 		//Função que envia operações para o banco;
 		//Atualiza a Pagina;
+		StateHasChanged();
 	}
 }
