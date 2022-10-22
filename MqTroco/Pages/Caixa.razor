@@ -30,12 +30,12 @@
 					<fieldset class="form-group">
 						<legend class="mt-4"><h1 style="padding-left:1.5rem;">Informações</h1></legend>
 						<div class="form-check form-switch">
-							<label class="form-check-label" for="flexSwitchCheckDefault"><h5>Valor Total das Moedas</h5></label>						
-							<label class="form-check-label" for="flexSwitchCheckDefault"><h5 style="font-size: xx-large; padding-left:2.5rem;">R$26,95</h5></label>
+							<label class="form-check-label" for="flexSwitchCheckDefault"><h5>Valor Total de Moedas</h5></label>						
+							<label class="form-check-label" for="flexSwitchCheckDefault"><h5 style="font-size: xx-large; padding-left:2.5rem;">@vlrTotalMoedas.ToString("C")</h5></label>
 						</div>
 					  <div class="form-check form-switch">
-						<label class="form-check-label" for="flexSwitchCheckChecked"><h5>Quantidade Totaldas Moedas</h5></label>
-						<label class="form-check-label" for="flexSwitchCheckDefault"><h5 style="font-size: xxx-large; padding-left:5.5rem;">14</h5></label>
+						<label class="form-check-label" for="flexSwitchCheckChecked"><h5>Quantidade Total de Moedas</h5></label>
+						<label class="form-check-label" for="flexSwitchCheckDefault"><h5 style="font-size: xxx-large; padding-left:5.5rem;">@qtdTotalMoedas</h5></label>
 					  </div>
 					</fieldset>
 				</div>
@@ -56,7 +56,7 @@
 
 								<div class="input-group mb-3" style="display: flex; justify-content: center;">
 									<span class="input-group-text">$</span>
-										<input type="text" class="form-control" style="font-size: xx-large; text-align: center; max-width:200px;" aria-label="Amount (to the nearest dollar)" @bind-value="@qtdMoedasSelectedAbasteceMoedas">
+										<input type="number" class="form-control" style="font-size: xx-large; text-align: center; max-width:200px;" aria-label="Amount (to the nearest dollar)" @bind-value="@qtdMoedasSelectedAbasteceMoedas">
 									<span class="input-group-text">$</span>
 									<button class="btn btn-secondary" type="button" id="button-addon2" @onclick="AbasteceMoedas"><h5>Adicionar <br/> Quantidade</h5></button>
 								</div>
@@ -85,7 +85,7 @@
 
 								<div class="input-group mb-3" style="display: flex; justify-content: center;">
 									<span class="input-group-text">$</span>
-										<input type="text" class="form-control" style="font-size: xx-large; text-align: center; max-width:200px;" aria-label="Amount (to the nearest dollar)" @bind-value="@qtdMoedasSelectedSangriaMoedas">
+										<input type="number" class="form-control" style="font-size: xx-large; text-align: center; max-width:200px;" aria-label="Amount (to the nearest dollar)" @bind-value="@qtdMoedasSelectedSangriaMoedas">
 									<span class="input-group-text">$</span>
 									<button class="btn btn-danger" type="button" id="button-addon2" @onclick="SangriaMoedas"><h5>Retirar <br/> Quantidade</h5></button>
 								</div>
@@ -125,12 +125,29 @@
 	//Instanciação dos Da Classe Principal e a Classe q faz a conexão dom o Db.
 	public List<Moeda> moedasCaixa = new List<Moeda>();
 	MoedaLogic moedaLogic = new MoedaLogic();
+	int qtdTotalMoedas = 0;
+	double vlrTotalMoedas = 0.0;
 
 	protected override async Task OnInitializedAsync()
 	{
 		Console.WriteLine("[Caixa] - Buscando info caixa Db");
 		//Chamada do método que cusca as informações do Banco e Popula a tela;
 		moedasCaixa = await moedaLogic.List();
+		ContaMoedas();
+	}
+
+	public void ContaMoedas()
+	{
+		//int qtd = 0;
+		//double vlr = 0.0;
+		qtdTotalMoedas = 0;
+		vlrTotalMoedas = 0.00;
+
+		foreach (var moeda in moedasCaixa)
+		{
+			qtdTotalMoedas += moeda.Qtd;
+			vlrTotalMoedas += moeda.Valor * moeda.Qtd;
+		}
 	}
 
 	//Variáveis auxiliares de AbasteceMoedas renderização de Elementos na tela e chamada da função.
@@ -153,7 +170,7 @@
 		Console.WriteLine("[Caixa] - AbasteceMoeda");
 		foreach (var moeda in moedasCaixa)
 		{
-			if (moeda.Nome == nomesMoedasAbasteceMoedas[@idMoedaSelectedAbasteceMoedas])
+			if (moeda.Nome == nomesMoedasAbasteceMoedas[@idMoedaSelectedAbasteceMoedas] && qtdMoedasSelectedAbasteceMoedas > 0)
 			{
 				//Console.WriteLine("Moeda . nome" + moeda.Nome);
 				//Console.WriteLine("Nome Selecionado Abst Moeda" + nomesMoedasAbasteceMoedas[@idMoedaSelectedAbasteceMoedas]);
@@ -161,6 +178,10 @@
 				//Console.WriteLine("Moeda . nome Pós Opereação" + moeda.Nome);
 				//Envia o valor atualizado do caixa para o BD;
 				await moedaLogic.Edit(moeda);
+			}
+			else if (moeda.Nome == nomesMoedasAbasteceMoedas[@idMoedaSelectedAbasteceMoedas] && qtdMoedasSelectedAbasteceMoedas < 0)
+			{
+				Console.WriteLine("[Caixa] - Valor negativo");
 			}
 		}
 		//foreach (var item in moedasCaixa)
@@ -173,6 +194,7 @@
 		//	Console.WriteLine("--------------");
 		//}
 		qtdMoedasSelectedAbasteceMoedas = 0;
+		ContaMoedas();
 		//Atualiza a Pagina;
 		StateHasChanged();
 	}
@@ -197,12 +219,19 @@
 		Console.WriteLine("[Caixa] - SangriaMoedas");
 		foreach (var moeda in moedasCaixa)
 		{
-			if (moeda.Id == idMoedaSelectedSangriaMoedas && moeda.Qtd > qtdMoedasSelectedSangriaMoedas)
+			if (moeda.Nome == nomesMoedasSangriaMoedas[@idMoedaSelectedSangriaMoedas] && moeda.Qtd > qtdMoedasSelectedSangriaMoedas)
 			{
+				Console.WriteLine("[Caixa] - Subtraindo moedas");
 				moeda.Qtd -= qtdMoedasSelectedSangriaMoedas;
 			}
+			else if (moeda.Nome == nomesMoedasSangriaMoedas[@idMoedaSelectedSangriaMoedas] && moeda.Qtd < qtdMoedasSelectedSangriaMoedas)
+			{
+				Console.WriteLine("[Caixa] - Quantidade de Moedas Insuficiente");
+			}
+			
 		}
 		qtdMoedasSelectedSangriaMoedas = 0;
+		ContaMoedas();
 		//Envia os valores atualizados do caixa para o banco;
 		//Atualiza a Pagina;
 		StateHasChanged();
@@ -248,6 +277,7 @@
 		}
 		//Copia Lista de Moedas da Operação para Lista de Moedas Atual;
 		moedasCaixa = copiaCaixa;
+		ContaMoedas();
 		//Função que envia operações para o banco;
 		//Atualiza a Pagina;
 		StateHasChanged();

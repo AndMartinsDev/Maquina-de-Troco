@@ -56,6 +56,7 @@
 	//Instanciação dos Objetos
 	List<Moeda> moedasCaixa = new List<Moeda>();
 	MoedaLogic moedaLogic = new MoedaLogic();
+	
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -65,11 +66,11 @@
 		//{
 		//	await moedaLogic.Delete(item.Id);
 		//}
-	
+
 
 		Console.WriteLine("[Index] - Buscando info caixa Db Init");
 		moedasCaixa = await moedaLogic.List();
-	
+
 		//Verifica se o caixa foi iniciado, caso não inicializa Com Valor zero e se sim busca as informações no Db.
 		if (moedasCaixa.Count < 1)
 		{
@@ -84,7 +85,7 @@
 			Console.WriteLine("[Index] - Buscando info caixa Db IF");
 			moedasCaixa = await moedaLogic.List();
 		}
-
+		
 	}
 
 }
