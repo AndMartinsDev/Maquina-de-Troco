@@ -108,9 +108,9 @@
 								</fieldset>
 
 								<div class="input-group mb-3" style="display: flex; justify-content: center;">
-									<span class="input-group-text">$</span>
+									<span class="input-group-text">R$</span>
 										<input type="text" class="form-control" style="font-size: xx-large; text-align: center; max-width:200px;" aria-label="Amount (to the nearest dollar)" @bind-value="@vlrMoedaInputedGeraTroco">
-									<button class="btn btn-secondary" type="button" id="button-addon2"><h5>Gerar Troco</h5></button>
+									<button class="btn btn-secondary" type="button" id="button-addon2"@onclick="()=> GeraTroco(vlrMoedaInputedGeraTroco)"><h5>Gerar Troco</h5></button>
 								</div>
 							</div>	
 						</form>
@@ -138,8 +138,6 @@
 
 	public void ContaMoedas()
 	{
-		//int qtd = 0;
-		//double vlr = 0.0;
 		qtdTotalMoedas = 0;
 		vlrTotalMoedas = 0.00;
 
@@ -172,11 +170,7 @@
 		{
 			if (moeda.Nome == nomesMoedasAbasteceMoedas[@idMoedaSelectedAbasteceMoedas] && qtdMoedasSelectedAbasteceMoedas > 0)
 			{
-				//Console.WriteLine("Moeda . nome" + moeda.Nome);
-				//Console.WriteLine("Nome Selecionado Abst Moeda" + nomesMoedasAbasteceMoedas[@idMoedaSelectedAbasteceMoedas]);
 				moeda.Qtd += qtdMoedasSelectedAbasteceMoedas;
-				//Console.WriteLine("Moeda . nome Pós Opereação" + moeda.Nome);
-				//Envia o valor atualizado do caixa para o BD;
 				await moedaLogic.Edit(moeda);
 			}
 			else if (moeda.Nome == nomesMoedasAbasteceMoedas[@idMoedaSelectedAbasteceMoedas] && qtdMoedasSelectedAbasteceMoedas < 0)
@@ -184,22 +178,14 @@
 				Console.WriteLine("[Caixa] - Valor negativo");
 			}
 		}
-		//foreach (var item in moedasCaixa)
-		//{
-		//	Console.WriteLine("Moedas end");
-		//	Console.WriteLine(item.Id);
-		//	Console.WriteLine(item.Nome);
-		//	Console.WriteLine(item.Valor);
-		//	Console.WriteLine(item.Qtd);
-		//	Console.WriteLine("--------------");
-		//}
 		qtdMoedasSelectedAbasteceMoedas = 0;
 		ContaMoedas();
 		//Atualiza a Pagina;
 		StateHasChanged();
 	}
 
-	//Variáveis auxiliares do Caixa renderização de Elementos na tela
+
+	//Variáveis auxiliares de SangriaMoedas renderização de Elementos na tela
 	static string nomeMoedaSelectedSangriaMoedas { get; set; } = "";
 	static int idMoedaSelectedSangriaMoedas { get; set; } = 0;
 	static int qtdMoedasSelectedSangriaMoedas { get; set; } = 0;
@@ -214,21 +200,26 @@
 		"R$0,01 centavo"
 	};
 
-	private void SangriaMoedas()
+	private async void SangriaMoedas()
 	{
 		Console.WriteLine("[Caixa] - SangriaMoedas");
 		foreach (var moeda in moedasCaixa)
 		{
-			if (moeda.Nome == nomesMoedasSangriaMoedas[@idMoedaSelectedSangriaMoedas] && moeda.Qtd > qtdMoedasSelectedSangriaMoedas)
+			if (moeda.Nome == nomesMoedasSangriaMoedas[@idMoedaSelectedSangriaMoedas] && moeda.Qtd > qtdMoedasSelectedSangriaMoedas && qtdMoedasSelectedSangriaMoedas > 0)
 			{
 				Console.WriteLine("[Caixa] - Subtraindo moedas");
 				moeda.Qtd -= qtdMoedasSelectedSangriaMoedas;
+				await moedaLogic.Edit(moeda);
 			}
 			else if (moeda.Nome == nomesMoedasSangriaMoedas[@idMoedaSelectedSangriaMoedas] && moeda.Qtd < qtdMoedasSelectedSangriaMoedas)
 			{
 				Console.WriteLine("[Caixa] - Quantidade de Moedas Insuficiente");
 			}
-			
+			else if (moeda.Nome == nomesMoedasSangriaMoedas[@idMoedaSelectedSangriaMoedas] && qtdMoedasSelectedSangriaMoedas < 0)
+			{
+				Console.WriteLine("[Caixa] - Quantidade Negativa");
+			}
+
 		}
 		qtdMoedasSelectedSangriaMoedas = 0;
 		ContaMoedas();
@@ -238,7 +229,7 @@
 	}
 
 
-	//Variáveis auxiliares do Caixa renderização de Elementos na tela
+	//Variáveis auxiliares de GeraTroco renderização de Elementos na tela
 	static string nomeMoedaSelectedGeraTroco { get; set; } = "";
 	static int idMoedaSelectedGeraTroco { get; set; } = 0;
 	static int qtdMoedasSelectedGeraTroco { get; set; } = 0;
@@ -253,33 +244,71 @@
 		"R$0,01 centavo"
 	};
 
-	private void GeraTroco(double valorEntrada)
+	private void GeraTroco(double valor)
 	{
 		Console.WriteLine("[Caixa] - GeraTroco");
 		//Copiar o Caixa, para verificar se a operação é viavel;
 		List<Moeda> copiaCaixa = new List<Moeda>();
 		copiaCaixa = moedasCaixa;
-
-		foreach (var moeda in copiaCaixa)
+		if (valor <= vlrTotalMoedas)
 		{
-			double qtdMoedaTroco = valorEntrada / moeda.Valor;
-			double restoDivisao = valorEntrada % moeda.Valor;
-			if(moeda.Qtd > qtdMoedaTroco)
+			for (int i = 0; i < copiaCaixa.Count(); i++)
 			{
-				moeda.Qtd -= (int)qtdMoedaTroco;
-				valorEntrada = restoDivisao;
+				Console.WriteLine("-----------------------");
+				Console.WriteLine("Inicio Moeda: " + copiaCaixa[i].Nome);
+				Console.WriteLine("Inicio Moeda qtd: " + copiaCaixa[i].Qtd);
+				Console.WriteLine("Inicio Valor: " + valor);
+				int qtdTroco = (int)(valor / copiaCaixa[i].Valor);
+				double restoDivisao = valor % copiaCaixa[i].Valor;
+				restoDivisao = Math.Round(restoDivisao, 2, MidpointRounding.ToEven);
+
+				if (copiaCaixa[i].Qtd > qtdTroco)
+				{
+					Console.WriteLine("IF");
+					Console.WriteLine("Valor IF: " + valor);
+					copiaCaixa[i].Qtd -= qtdTroco;
+					Console.WriteLine("Qtd Moeda: " + copiaCaixa[i].Qtd);
+					valor = restoDivisao;
+					valor = Math.Round(valor, 2, MidpointRounding.ToEven);
+					Console.WriteLine("Valor: " + valor);
+					Console.WriteLine("resto divisão: " + restoDivisao);
+					if (valor <= 0.00)
+					{
+						Console.WriteLine("Valor chegou a ZERO Break IF");
+						break;
+					}
+				}
+				else
+				{
+					Console.WriteLine("ELSE");
+					Console.WriteLine("Valor ELSE: " + valor);
+					qtdTroco -= copiaCaixa[i].Qtd;
+					valor -= copiaCaixa[i].Qtd * copiaCaixa[i].Valor;
+					valor = Math.Round(valor, 2, MidpointRounding.ToEven);
+					Console.WriteLine("qtd troco: " + qtdTroco);
+					Console.WriteLine("Valor sobra: " + valor);
+					copiaCaixa[i].Qtd = 0;
+					if (valor <= 0.00)
+					{
+						Console.WriteLine("Valor chegou a ZERO Break ELSE");
+						break;
+					}
+				}
 			}
-			else
-			{
-				break;
-				//Mensagem de Alerta;(Não implementada);
-			}
+			vlrMoedaInputedGeraTroco = 0.00;
+			
+		}
+		else
+		{
+			Console.WriteLine("Operação cancelada! Valor de moedas insuficiente!");
 		}
 		//Copia Lista de Moedas da Operação para Lista de Moedas Atual;
-		moedasCaixa = copiaCaixa;
-		ContaMoedas();
+		//moedasCaixa = copiaCaixa;
+		//ContaMoedas();
 		//Função que envia operações para o banco;
 		//Atualiza a Pagina;
-		StateHasChanged();
+		//StateHasChanged();		
 	}
+		
+	
 }

@@ -34,7 +34,7 @@
 				<div class="col" style="min-width:350px;">
 					<ul class="list-group">
 						<a href="#" class="txt-center list-group-item list-group-item-action active">
-							<h2 style="tex-align:center; text-align:center;">$$ CAIXA $$</h2>
+							<h2 style="tex-align:center;">$$ CAIXA $$</h2>
 						</a>
 						@foreach (var moeda in moedasCaixa)
 						{
@@ -56,18 +56,9 @@
 	//Instanciação dos Objetos
 	List<Moeda> moedasCaixa = new List<Moeda>();
 	MoedaLogic moedaLogic = new MoedaLogic();
-	
 
 	protected override async Task OnInitializedAsync()
 	{
-		//DELETA  TUDO
-		//moedasCaixa = await moedaLogic.List();
-		//foreach (var item in moedasCaixa)
-		//{
-		//	await moedaLogic.Delete(item.Id);
-		//}
-
-
 		Console.WriteLine("[Index] - Buscando info caixa Db Init");
 		moedasCaixa = await moedaLogic.List();
 
@@ -85,7 +76,5 @@
 			Console.WriteLine("[Index] - Buscando info caixa Db IF");
 			moedasCaixa = await moedaLogic.List();
 		}
-		
 	}
-
 }
