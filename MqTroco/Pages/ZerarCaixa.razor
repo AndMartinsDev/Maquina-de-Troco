@@ -1,0 +1,70 @@
+﻿@page "/zerarcaixa"
+<PageTitle>Zerar Caixa</PageTitle>
+<div class="card border-primary mb-1" style="box-shadow:10px 5px 5px black; min-height:40rem;">
+  <div class="card-header" style="display:flex"><h1> - Bem Vindo!!! <smal> - Esta é a Maquina de Troco -</smal></h1></div>
+	<div class="card-body" style="padding:3rem;">
+			<div class="container" style="display:flex;">
+				<div class="row gx-5">
+				<div class="col card text-white bg-danger mb-3" style="box-shadow: 10px 5px 5px black; min-width:400px; margin-top:1rem; text-align: center;">
+					<div class="card-header">
+						<h2>Zerando Seu Caixa</h2>
+					</div>
+					<div class="card-body">
+					<h4 style="margin-top:1.5rem;"> Nesta Pagina Você Tem a Oportunidade de Zerar Seu Caixa.</h4>
+					<h3 style="margin-top:1.5rem;"> A Escolha é Sua!!!</h3>
+					</div>
+				</div>
+				<div class="col-1" style="padding:2rem; min-width:350px; display: flex; justify-content: center;">
+					<fieldset class="form-group">
+						<legend class="mt-4"><h1 style="text-align: center; font-size3rem;">Atenção!</h1></legend>
+						<div Style="text-align: center;">
+							<div class="form-check form-switch" style="margin-top:1rem;">
+							<label class="form-check-label" for="flexSwitchCheckDefault"><h5>- Clique Para Zerar o Caixa;</h5></label>
+							</div>
+							<button type="button" class="btn btn-secondary btn-lg" style="box-shadow: 10px 5px 5px black;" @onclick="ZeraCaixa"><h4>Zerar Caixa</h4></button>
+						</div>
+					</fieldset>
+				</div>
+				<div class="col" style="min-width:350px;">
+					<ul class="list-group">
+						<a href="#" class="txt-center list-group-item list-group-item-action active">
+							<h2 style="tex-align:center;">$$ CAIXA $$</h2>
+						</a>
+						@foreach (var moeda in moedasCaixa)
+						{
+								<li class="list-group-item d-flex justify-content-between align-items-center">
+										<h5>Moedas @moeda.Nome</h5>
+										<span class="badge bg-primary rounded-pill-lg" style="font-size:1rem;">@moeda.Qtd</span>
+								</li>	
+						}
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@code {
+	//Instanciação dos Objetos
+	List<Moeda> moedasCaixa = new List<Moeda>();
+	MoedaLogic moedaLogic = new MoedaLogic();
+
+	protected override async Task OnInitializedAsync()
+	{
+		Console.WriteLine("[Zerar Caixa] - Buscando info caixa Db");
+		moedasCaixa = await moedaLogic.List();
+	}
+
+	private async void ZeraCaixa()
+	{
+		Console.WriteLine("[ZeraCaixa] - Zerando Caixa");
+		foreach (var moeda in moedasCaixa)
+		{
+			moeda.Qtd = 0;
+			await moedaLogic.Edit(moeda);
+		}
+		Console.WriteLine("[ZeraCaixa] - Buscando info caixa Db");
+		moedasCaixa = await moedaLogic.List();
+		StateHasChanged();
+	}
+}

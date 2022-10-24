@@ -41,12 +41,6 @@ namespace MqTroco.Logic
 			}
 		}
 
-        public async Task<Moeda> Get(int id)
-		{
-			var moeda = await _systemContext.Moeda.FirstOrDefaultAsync(x => x.Id == id);
-			return moeda;
-		}
-
 	}
 
 }
