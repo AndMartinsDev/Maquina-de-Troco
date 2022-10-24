@@ -51,19 +51,19 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		Console.WriteLine("[Zerar Caixa] - Buscando info caixa Db");
+		//Buscaas informações do caixa no Db;
 		moedasCaixa = await moedaLogic.List();
 	}
 
 	private async void ZeraCaixa()
 	{
-		Console.WriteLine("[ZeraCaixa] - Zerando Caixa");
+		//Zera o Caixa e edita as informações no Db;
 		foreach (var moeda in moedasCaixa)
 		{
 			moeda.Qtd = 0;
 			await moedaLogic.Edit(moeda);
 		}
-		Console.WriteLine("[ZeraCaixa] - Buscando info caixa Db");
+		//Busca as informações do caixa no Db;
 		moedasCaixa = await moedaLogic.List();
 		StateHasChanged();
 	}

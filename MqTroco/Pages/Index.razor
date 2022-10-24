@@ -50,8 +50,6 @@
 	</div>
 </div>
 
-
-
 @code {
 	//Instanciação dos Objetos
 	List<Moeda> moedasCaixa = new List<Moeda>();
@@ -59,7 +57,7 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		Console.WriteLine("[Index] - Buscando info caixa Db Init");
+		//Buscando info caixa Db;
 		moedasCaixa = await moedaLogic.List();
 
 		//Verifica se o caixa foi iniciado, caso não inicializa Com Valor zero e se sim busca as informações no Db.
@@ -73,7 +71,7 @@
 			await moedaLogic.Create(new Moeda() { Nome = "RS0,05 centavos", Valor = 0.05, Qtd = 0 });
 			await moedaLogic.Create(new Moeda() { Nome = "R$0,01 centavo", Valor = 0.01, Qtd = 0 });
 
-			Console.WriteLine("[Index] - Buscando info caixa Db IF");
+			//Atribui as informações do Db ao caixa;
 			moedasCaixa = await moedaLogic.List();
 		}
 	}
